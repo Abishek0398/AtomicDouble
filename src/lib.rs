@@ -1,6 +1,24 @@
-#![warn(rust_2018_idioms)]
+//! `AtomicDouble<T>` wrapper type supporting only 128-bit atomics
+//!
+//! Atomic types provide primitive shared-memory communication between
+//! threads, and are the building blocks of other concurrent types.
+//!
+//! The library provides a wrapper type `AtomicDouble<T>`. This wrapper provides 128-bit atomic operations
+//! `T: Copy` types. For types that doesnt support 128-bit atomics fallback implementation using spin-lock
+//! is provided.
+//!
+//! Atomic types present operations that, when used correctly, synchronize
+//! updates between threads.
+//!
+//! Each method takes an `Ordering` which represents the strength of
+//! the memory barrier for that operation. These orderings are the
+//! same as [LLVM atomic orderings][1].
+//!
+//! [1]: http://llvm.org/docs/LangRef.html#memory-model-for-concurrent-operations
 
+#![warn(rust_2018_idioms)]
 #![feature(stdsimd)]
+#![warn(missing_docs)]
 
 pub use core::sync::atomic::{fence, Ordering};
 
@@ -13,6 +31,7 @@ mod ops;
 use core::cell::UnsafeCell;
 use core::fmt;
 
+/// Wrapper type that provides the 128-bit atomic operations
 #[repr(C,align(16))]
 pub struct AtomicDouble<T> {
     v : UnsafeCell<T>
