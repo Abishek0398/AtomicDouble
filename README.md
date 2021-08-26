@@ -25,3 +25,6 @@ at your option.
 Unless you explicitly state otherwise, any contribution intentionally submitted
 for inclusion in the work by you, as defined in the Apache-2.0 license, shall be dual licensed as above, without any
 additional terms or conditions.
+
+## Credits
+This crate is effectively a 128-bit only version of [`Atomic<T>`](https://github.com/Amanieu/atomic-rs) crate. `Atomic<T>` crate doesn't work for 128 bit atomics for now, as rust doesnt have support for AtomicU128/AtomicI128 yet. In the mean time AtomicDouble<T> can be used as a replacement.
