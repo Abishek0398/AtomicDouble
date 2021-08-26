@@ -2,13 +2,11 @@
 //!
 //! Atomic types provide primitive shared-memory communication between
 //! threads, and are the building blocks of other concurrent types.
+//! Double width atomics are an essential part of many lock free algorithms to avoid the ABA problem.
 //!
 //! The library provides a wrapper type `AtomicDouble<T>`. This wrapper provides 128-bit atomic operations
-//! `T: Copy` types. For types that doesnt support 128-bit atomics fallback implementation using spin-lock
+//! for `T: Copy` types. For types that doesnt support 128-bit atomics, fallback implementation using spin-lock
 //! is provided.
-//!
-//! Atomic types present operations that, when used correctly, synchronize
-//! updates between threads.
 //!
 //! Each method takes an `Ordering` which represents the strength of
 //! the memory barrier for that operation. These orderings are the
@@ -17,8 +15,8 @@
 //! [1]: http://llvm.org/docs/LangRef.html#memory-model-for-concurrent-operations
 
 #![warn(rust_2018_idioms)]
-#![feature(stdsimd)]
 #![warn(missing_docs)]
+#![feature(stdsimd)]
 
 pub use core::sync::atomic::{fence, Ordering};
 
