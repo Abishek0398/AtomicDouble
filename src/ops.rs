@@ -38,7 +38,8 @@ unsafe fn compare_exchange_intrinsic<T>(dst: *mut u128,
 pub fn atomic_is_lock_free<T>() -> bool {
     #[cfg(target_arch = "x86_64")]
     {
-        if is_x86_feature_detected!("cmpxchg16b") {
+        if is_x86_feature_detected!("cmpxchg16b")&&
+        mem::size_of::<T>() == 16 {
             return true
         }
     }
@@ -165,6 +166,9 @@ mod tests {
     #[derive(Copy, Clone, Eq, PartialEq, Debug, Default)]
     struct Bar(u64, u64);
 
+    #[derive(Copy, Clone, Eq, PartialEq, Debug, Default)]
+    struct SizeBar(u32, u32);
+
     #[derive(Copy, Clone, Eq, PartialEq, Debug)]
     struct Node {
         head_ptr : Option< NonNull<i32> >,
@@ -188,6 +192,11 @@ mod tests {
             Ok(Bar(1, 1))
         );
         assert_eq!(a.load(SeqCst), Bar(3, 3));
+    }
+
+    #[test]
+    fn atomic_sizebar() {
+        assert_eq!(AtomicDouble::<SizeBar>::is_lock_free(), false);
     }
 
     #[test]
