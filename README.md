@@ -5,6 +5,8 @@ You can use the `AtomicDouble::<T>::is_lock_free()` function to check whether na
 Note that the library is tailor made for 128-bit operations, types violating the size constraints will use the fallback implementation.
 Fallback implementation is enabled by default and can be disabled by adding `default-features = false` to the dependency declaration.
 
+This crate requires nightly.
+
 [Documentation](https://docs.rs/atomicdouble)
 
 ## Usage
