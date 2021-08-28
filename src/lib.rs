@@ -17,6 +17,7 @@
 #![warn(rust_2018_idioms)]
 #![warn(missing_docs)]
 #![feature(stdsimd)]
+#![feature(cmpxchg16b_target_feature)]
 
 pub use core::sync::atomic::{fence, Ordering};
 

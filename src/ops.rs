@@ -5,6 +5,8 @@ use core::arch::x86_64::cmpxchg16b;
 #[cfg(feature = "fallback")]
 use crate::fallback;
 
+#[inline(never)]
+#[target_feature(enable="cmpxchg16b")]
 unsafe fn compare_exchange_intrinsic<T>(dst: *mut u128, 
     current: u128, 
     new: u128, 
@@ -24,18 +26,12 @@ unsafe fn compare_exchange_intrinsic<T>(dst: *mut u128,
                 return Err(res);
             }
         }
-        else {
-            #[cfg(feature = "fallback")]
-            return fallback::atomic_compare_exchange(dst, current, new);
-            #[cfg(not(feature = "fallback"))]
-            panic!("Atomic operations for type `{}` are not available as the `fallback` feature of the `atomicdouble` crate is disabled.", core::any::type_name::<T>());
-        }
     }
 
-    #[cfg(not(target_arch="x86_64"))]
-    {
-        return fallback::atomic_compare_exchange(dst, current, new)
-    }
+    #[cfg(feature = "fallback")]
+    return fallback::atomic_compare_exchange(dst, current, new);
+    #[cfg(not(feature = "fallback"))]
+    panic!("Atomic operations for type `{}` are not available as the `fallback` feature of the `atomicdouble` crate is disabled.", core::any::type_name::<T>());
 }
 
 #[inline]
