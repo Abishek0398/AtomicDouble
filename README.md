@@ -16,6 +16,35 @@ Add this to your `Cargo.toml`:
 atomicdouble = "0.1.1"
 ```
 
+## Example
+```rust
+use std::ptr::NonNull;
+
+use atomicdouble::AtomicDouble;
+use atomicdouble::Ordering::SeqCst;
+
+#[derive(Copy, Clone, Eq, PartialEq, Debug,Default)]
+struct Node {
+    head_ptr : Option< NonNull<i32> >,
+    head_count : usize //assuming 64-bit machine
+}
+
+fn main() {
+    let x = Box::new(5);
+    let temp_node_x = Node {
+        head_ptr:NonNull::new(Box::into_raw(x)),
+        head_count:3
+    };
+    let a:AtomicDouble::<Node> = AtomicDouble::new(temp_node_x);
+    println!("{}",AtomicDouble::<Node>::is_lock_free());
+    let load_test = a.load(SeqCst);
+    unsafe {
+        let load_test_x = Box::from_raw(load_test.head_ptr.unwrap().as_ptr());
+        println!("{}",*load_test_x);
+        println!("{}",load_test.head_count);
+    };
+}
+```
 ## License
 
 Licensed under either of
