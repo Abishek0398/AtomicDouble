@@ -56,7 +56,7 @@ impl<T: Copy + fmt::Debug> fmt::Debug for AtomicDouble<T> {
 }
 
 impl<T> AtomicDouble<T> {
-    /// Creates a new `Atomic`.
+    /// Creates a new `AtomicDouble`.
     #[inline]
     pub const fn new(v: T) -> AtomicDouble<T> {
         AtomicDouble {
@@ -64,9 +64,9 @@ impl<T> AtomicDouble<T> {
         }
     }
 
-    /// Checks if `Atomic` objects of this type are lock-free.
+    /// Checks if `AtomicDouble` objects of this type are lock-free.
     ///
-    /// If an `Atomic` is not lock-free then it may be implemented using locks
+    /// If an `AtomicDouble` is not lock-free then it may be implemented using locks
     /// internally, which makes it unsuitable for some situations (such as
     /// communicating with a signal handler).
     #[inline]
@@ -94,7 +94,7 @@ impl<T: Copy> AtomicDouble<T> {
         self.v.into_inner()
     }
 
-    /// Loads a value from the `Atomic`.
+    /// Loads a value from the `AtomicDouble`.
     ///
     /// `load` takes an `Ordering` argument which describes the memory ordering
     /// of this operation.
@@ -107,7 +107,7 @@ impl<T: Copy> AtomicDouble<T> {
         unsafe { ops::atomic_load(self.v.get(), order) }
     }
 
-    /// Stores a value into the `Atomic`.
+    /// Stores a value into the `AtomicDouble`.
     ///
     /// `store` takes an `Ordering` argument which describes the memory ordering
     /// of this operation.
@@ -123,7 +123,7 @@ impl<T: Copy> AtomicDouble<T> {
     }
 
 
-    /// Stores a value into the `Atomic` if the current value is the same as the
+    /// Stores a value into the `AtomicDouble` if the current value is the same as the
     /// `current` value.
     ///
     /// The return value is a result indicating whether the new value was
