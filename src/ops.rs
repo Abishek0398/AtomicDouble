@@ -7,10 +7,19 @@ use crate::fallback;
 
 #[inline(never)]
 #[target_feature(enable="cmpxchg16b")]
-unsafe fn compare_exchange_intrinsic<T>(dst: *mut u128, 
-    current: u128, 
-    new: u128, 
-    success: Ordering, 
+unsafe fn x86_64_cmpxchg16b(dst: *mut u128, 
+    current: u128,
+    new: u128,
+    success: Ordering,
+    failure: Ordering)-> u128 {
+    cmpxchg16b(dst, current, new, success, failure)
+}
+
+#[inline]
+unsafe fn compare_exchange_intrinsic<T>(dst: *mut u128,
+    current: u128,
+    new: u128,
+    success: Ordering,
     failure: Ordering
 ) -> Result<u128,u128>{
     #[cfg(target_arch = "x86_64")]
@@ -18,7 +27,7 @@ unsafe fn compare_exchange_intrinsic<T>(dst: *mut u128,
         if is_x86_feature_detected!("cmpxchg16b") &&
         mem::size_of::<T>() == 16
         {
-            let res = cmpxchg16b(dst, current, new, success, failure);
+            let res = x86_64_cmpxchg16b(dst, current, new, success, failure);
             if res == current {
                 return Ok(res);
             }

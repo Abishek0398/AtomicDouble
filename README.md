@@ -13,7 +13,7 @@ This crate requires nightly.
 Add this to your `Cargo.toml`:
 ```toml
 [dependencies]
-atomicdouble = "0.1.2"
+atomicdouble = "0.1.3"
 ```
 
 ## Example
