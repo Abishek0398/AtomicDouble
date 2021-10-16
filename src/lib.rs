@@ -31,9 +31,9 @@ use core::cell::UnsafeCell;
 use core::fmt;
 
 /// Wrapper type that provides the 128-bit atomic operations
-#[repr(C,align(16))]
+#[repr(C, align(16))]
 pub struct AtomicDouble<T> {
-    v : UnsafeCell<T>
+    v: UnsafeCell<T>,
 }
 
 unsafe impl<T: Copy + Send> Sync for AtomicDouble<T> {}
@@ -121,7 +121,6 @@ impl<T: Copy> AtomicDouble<T> {
             ops::atomic_store(self.v.get(), val, order);
         }
     }
-
 
     /// Stores a value into the `AtomicDouble` if the current value is the same as the
     /// `current` value.
